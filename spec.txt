@@ -1,0 +1,12 @@
+Simple starting spec for Speaker written in Golang
+
+Introduction/Client-Server Setup
+
+Client sends magic to broadcast
+Server is constantly listening for broadcasts
+
+The ping is always the 0xDEAD and the reply is always 0xC0DE
+
+Client sends a 0xDEAD to Server, and Server responds
+Server sends a 0xDEAD to Client every 2 seconds, with Timeout of 2 seconds, disconnect if timeout
+Server maintains list of all clients, clients don't have to know about each other.
