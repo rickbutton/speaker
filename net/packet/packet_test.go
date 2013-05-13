@@ -6,6 +6,31 @@ import (
 )
 
 func TestNewSimplePacket(t *testing.T) {
+  types := []PacketType{
+    REQUEST,
+    ACK,
+    CLOSE,
+    PING,
+    PONG,
+  }
+  for i := range types {
+    p := NewSimplePacket(123, types[i])
+    if p.PacketType() != types[i] {
+      t.Errorf("PacketType() = %d, want %d", p.PacketType(), types[i])
+    }
+    if p.Version() != 123 {
+      t.Errorf("%d Version() = %d, want %d", p.PacketType(), p.Version(), 123)
+    }
+    if len(p.RawPayload()) != 0 {
+      t.Errorf("Packet type %d shouldn't have a payload, but does")
+    }
+    raw := []byte{123, byte(types[i])}
+    if !bytes.Equal(p.Raw(), raw) {
+      t.Errorf("Raw() = %v, want %v", p.Raw(), raw)
+    }
+  }
+}
+func TestAllNewSimplePacket(t *testing.T) {
 	types := map[PacketType]func(byte) Packet{
 		REQUEST: NewRequestPacket,
 		ACK:     NewAckPacket,

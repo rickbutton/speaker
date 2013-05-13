@@ -4,6 +4,7 @@ import (
 	"github.com/rickbutton/speaker/net/decode"
 	"github.com/rickbutton/speaker/net/packet"
 	"net"
+  _ "log"
 )
 
 const (
@@ -11,11 +12,12 @@ const (
 )
 
 var (
-	broadcast net.IP = net.IPv4(255, 255, 255, 255)
+	listen net.IP = net.IPv4(0, 0, 0, 0)
 )
 
 func (s *Server) BroadcastListen() {
-	socket, err := net.ListenUDP("udp4", nil, &net.UDPAddr{broadcast, port})
+	socket, err := net.ListenUDP("udp4", &net.UDPAddr{listen, port})
+  logger.Printf("Starting auto discovery server")
 	if err != nil {
 		panic(err)
 	}
@@ -27,7 +29,7 @@ func (s *Server) BroadcastListen() {
 		}
 		p := decode.DecodeRawPacket(data[0:n])
 		if p.PacketType() == packet.PING {
-			client, err := server.OpenConn(addr.IP)
+			client, err := s.OpenConn(addr.IP)
 			if err != nil {
 				panic(err)
 			}
