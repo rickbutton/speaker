@@ -1,6 +1,5 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
+external/portaudio/Makefile
+external/portaudio/config.log
+external/portaudio/config.status
+external/portaudio/libtool
+external/portaudio/portaudio-2.0.pc
